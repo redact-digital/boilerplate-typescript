@@ -1,0 +1,11 @@
+{
+  "name": "typescript-node-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/bin/www",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Patrick Rizzardi <patrick@redact.digital> (https://redact.digital)",
+  "license": "MIT"
+}
