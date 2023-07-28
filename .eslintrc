@@ -1,0 +1,63 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts"]
+    },
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.d.ts"],
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      },
+      "extends": ["airbnb-typescript/base", "prettier"],
+      "plugins": ["import", "@typescript-eslint", "prettier"],
+      "rules": {
+        "prettier/prettier": "error",
+        "no-console": "error",
+        "no-unused-vars": "error",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_"
+          }
+        ],
+        "no-param-reassign": "error",
+        "no-underscore-dangle": 0,
+        "no-use-before-define": 0,
+        "comma-dangle": ["error", "always-multiline"],
+        "no-return-assign": 0,
+        "camelcase": [
+          "error",
+          {
+            "properties": "never"
+          }
+        ],
+        "import/extensions": 0,
+        "@typescript-eslint/no-redeclare": 0,
+        "@typescript-eslint/no-use-before-define": 0,
+        "@typescript-eslint/no-throw-literal": "error",
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": ["strictCamelCase", "PascalCase"],
+            "leadingUnderscore": "allow"
+          }
+        ]
+      }
+    }
+  ],
+  "ignorePatterns": ["node_modules/", "dist/"]
+}

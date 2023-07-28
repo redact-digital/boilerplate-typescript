@@ -5,19 +5,7 @@
   /**
    * These are prebuilt dictionaries for cspell.
    */
-  "dictionaries": [
-    "en_US",
-    "companies",
-    "typescript",
-    "softwareTerms",
-    "bash",
-    "css",
-    "html",
-    "node",
-    "npm",
-    "filetypes",
-    "fonts"
-  ],
+  "dictionaries": ["en_US", "companies", "typescript", "softwareTerms", "bash", "css", "html", "node", "npm", "filetypes", "fonts"],
 
   // language - current active spelling language
   "language": "en",
