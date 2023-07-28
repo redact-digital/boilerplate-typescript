@@ -1,6 +1,6 @@
 import { createLogger, format, transports, addColors } from 'winston';
-// import DatadogWinston from 'datadog-winston';
-// import os from 'os';
+import DatadogWinston from 'datadog-winston';
+import os from 'os';
 import config from '../config/index.config';
 
 /**
@@ -24,7 +24,7 @@ enum LogColors {
 interface Transports {
   console: transports.ConsoleTransportInstance;
   file: transports.FileTransportInstance;
-  // datadog: DatadogWinston;
+  datadog: DatadogWinston;
 }
 
 /**
@@ -104,13 +104,13 @@ const transporters: Transports = {
     filename: config.get('log.file'),
     format: fileFormatter,
   }),
-  // datadog: new DatadogWinston({
-  //   apiKey: config.get('log.datadog.apiKey'),
-  //   ddsource: 'nodejs',
-  //   ddtags: `env:${config.get('app.env')}`,
-  //   service: config.get('app.name'),
-  //   hostname: os.hostname(),
-  // }),
+  datadog: new DatadogWinston({
+    apiKey: config.get('log.datadog.apiKey'),
+    ddsource: 'nodejs',
+    ddtags: `env:${config.get('app.env')}`,
+    service: config.get('app.name'),
+    hostname: os.hostname(),
+  }),
 };
 
 /**

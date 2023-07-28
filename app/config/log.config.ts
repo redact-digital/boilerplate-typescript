@@ -23,7 +23,7 @@ export default {
     apiKey: {
       doc: 'The api key to use for datadog logging. This only applies to when the environment is set to production or development, and the datadog transport is enabled',
       format: String,
-      default: '',
+      default: 'secret',
       env: 'LOG_DATADOG_API_KEY',
       sensitive: true,
     },
