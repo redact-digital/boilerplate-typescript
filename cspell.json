@@ -11,7 +11,7 @@
   "language": "en",
 
   // words - list of words to be always considered correct
-  "words": [],
+  "words": ["rizzardi", "ddsource", "ddtags"],
 
   /**
    * flagWords - list of words to be always considered incorrect
