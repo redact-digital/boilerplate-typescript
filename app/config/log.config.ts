@@ -9,8 +9,8 @@ export default {
   },
   transports: {
     doc: 'The transports to use for logging. This only applies to when the environment is set to production or development',
-    format: Array,
-    default: ['console', 'file'],
+    format: String,
+    default: "'console', 'file'",
     env: 'LOG_TRANSPORTS',
   },
   file: {

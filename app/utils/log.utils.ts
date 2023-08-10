@@ -1,6 +1,7 @@
-import { createLogger, format, transports, addColors } from 'winston';
-import DatadogWinston from 'datadog-winston';
 import os from 'os';
+import type { TransformableInfo } from 'logform';
+import { addColors, createLogger, format, transports } from 'winston';
+import DatadogWinston from 'datadog-winston';
 import config from '../config/index.config';
 
 /**
@@ -60,16 +61,17 @@ const formatter = format.combine(
   format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
 
   /** Format the way the log is output to the console */
-  format.printf((info: any) => {
-    let { timestamp, level, message, ...meta } = info;
+  format.printf((info: TransformableInfo) => {
+    const { timestamp, level, ...meta } = info;
+    let message = undefined;
+    if (meta.message) message = <string>meta.message;
 
-    /**
-     * If the message is an object, we want to format it to be more readable
-     * Also since it's an object, we need to stringify it
-     */
-    if (typeof message === 'object') message = JSON.stringify(message, null, 2);
+    if (Object.keys(meta).length > 1) {
+      delete meta.message;
+      message = `${message} \n${JSON.stringify(meta, null, 2)}`;
+    }
 
-    return `${timestamp} [${level}]: ${message} \n${Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''}`;
+    return `${timestamp} [${level}]: ${message}`;
   }),
 );
 
@@ -82,16 +84,17 @@ const fileFormatter = format.combine(
   format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
 
   /** Format the way the log is output to the console */
-  format.printf((info: any) => {
-    let { timestamp, level, message, ...meta } = info;
+  format.printf((info: TransformableInfo) => {
+    const { timestamp, level, ...meta } = info;
+    let message = undefined;
+    if (meta.message) message = <string>meta.message;
 
-    /**
-     * If the message is an object, we want to format it to be more readable
-     * Also since it's an object, we need to stringify it
-     */
-    if (typeof message === 'object') message = JSON.stringify(message, null, 2);
+    if (Object.keys(meta).length > 1) {
+      delete meta.message;
+      message = `${message} \n${JSON.stringify(meta, null, 2)}`;
+    }
 
-    return `${timestamp} [${level}]: ${message} \n${Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''}`;
+    return `${timestamp} [${level}]: ${message}`;
   }),
 );
 
@@ -117,10 +120,11 @@ const transporters: Transports = {
  * Create the local logger. We include the console transport only and
  * include all levels since this is only intended for development
  */
+// eslint-disable-next-line import/no-mutable-exports
 let log = createLogger({ level: 'info', transports: transporters.console, levels: logLevels });
 
 const transportsToUse = [];
-for (const transport of config.get('log.transports')) {
+for (const transport of config.get('log.transports').split(',')) {
   switch (transport) {
     case 'console':
       transportsToUse.push(transporters.console);
@@ -128,11 +132,8 @@ for (const transport of config.get('log.transports')) {
     case 'file':
       transportsToUse.push(transporters.file);
       break;
-    case 'both':
-      transportsToUse.push(transporters.console, transporters.file);
-      break;
     case 'datadog':
-      // transportsToUse.push(transporters.datadog);
+      transportsToUse.push(transporters.datadog);
       break;
     default:
       transportsToUse.push(transporters.console);
